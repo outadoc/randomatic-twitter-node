@@ -98,7 +98,7 @@
 		}
 
 		//just log the message with a timestamp
-		console.log(getTimestampString() + message);
+		console.log('\033[33m' + getTimestampString() + messageColor + message);
 	}
 
 	function getTimestampString() {
