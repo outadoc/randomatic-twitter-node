@@ -104,7 +104,14 @@
 	function getTimestampString() {
 		var date = new Date();
 		//format nicely a timestamp we can put in front of our logs
-		return "[" + date.getDate() + "/" + date.getMonth()+1 + "/" + date.getFullYear() + " - " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + "] ";
+		return "[" + addUselessZero(date.getDate()) + "/" + addUselessZero(date.getMonth()+1) + "/" + addUselessZero(date.getFullYear()) + "-" + addUselessZero(date.getHours()) + ":" + addUselessZero(date.getMinutes()) + ":" + addUselessZero(date.getSeconds()) + "] ";
+	}
+
+	function addUselessZero(num) {
+		if(num < 10) {
+			return '0' + num.toString();
+		}
+		return num;
 	}
 
 })();
