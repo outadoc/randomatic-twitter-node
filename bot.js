@@ -82,7 +82,21 @@
 		}
 	});
 	
-	function logtrace(message) {
+	function logtrace(message, color) {
+		var messageColor;
+
+		if(color == "red") {
+			messageColor = '\033[31m';
+		} else if(color == "green") {
+			messageColor = '\033[32m';
+		} else if(color == "yellow") {
+			messageColor = '\033[33m';
+		} else if(color == "blue") {
+			messageColor = '\033[34m';
+		} else {
+			messageColor = '\033[0m';
+		}
+
 		//just log the message with a timestamp
 		console.log(getTimestampString() + message);
 	}
