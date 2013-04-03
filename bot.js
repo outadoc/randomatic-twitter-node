@@ -10,10 +10,10 @@
 
 		//create an object using the keys we just determined
 		twitterAPI = new twitter({
-			consumer_key:        'YOUR_CONSUMER_TOKEN',
-			consumer_secret:     'YOUR_CONSUMER_SECRET',
-			access_token_key:    'YOUR_ACCESS_TOKEN_KEY',
-			access_token_secret: 'YOUR_ACCESS_TOKEN_SECRET'
+			consumer_key:        'JNUuAnHQAiIzrdZXFQ1jlQ',
+			consumer_secret:     'DB3RuaKgZryn2Zw5BPSuWRusZGiWzN38LAzjPB7g',
+			access_token_key:    '1320886308-G1kfBNRmHltQDVqDvEOYH1agzCaEhyl5UOWB82c',
+			access_token_secret: 'sEwFQl4Sz2ptEIpASBr36SXINUYON81fgk4yb4AqIo0'
 		});
 	
 	//check if we have the rights to do anything
@@ -48,7 +48,7 @@
 										//handling the error, again
 										logtrace(error);
 									} else {
-										logtrace("#got random tweet");
+										logtrace("#got random tweet for " + newTweetData.username);
 										//store the final tweet (containing the mention)
 										var tweetDone = '@' + newTweetData.username + " " + newTweetData.tweet;
 										
