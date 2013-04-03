@@ -26,12 +26,12 @@
 		} else {
 			//the credentials check returns the username, so we can store it here
 			botUsername = userdata.screen_name;
-			LogUtils.logtrace("logged in as " + userdata.screen_name, LogUtils.Colors.BLUE);
+			LogUtils.logtrace("logged in as " + userdata.screen_name, LogUtils.Colors.CYAN);
 
 			//start listening to tweets that contain the bot's username using the streaming api
 			twitterAPI.stream('user', { with:'followings', track:'@' + botUsername },
 				function(stream) {
-					LogUtils.logtrace("streaming", LogUtils.Colors.BLUE);
+					LogUtils.logtrace("streaming", LogUtils.Colors.CYAN);
 
 					//when we're receiving something
 					stream.on('data', function(data) {
