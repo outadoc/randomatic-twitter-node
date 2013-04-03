@@ -11,12 +11,7 @@
 		botUsername = null,
 
 		//create an object using the keys we just determined
-		twitterAPI = new twitter({
-			consumer_key:        'JNUuAnHQAiIzrdZXFQ1jlQ',
-			consumer_secret:     'DB3RuaKgZryn2Zw5BPSuWRusZGiWzN38LAzjPB7g',
-			access_token_key:    '1320886308-G1kfBNRmHltQDVqDvEOYH1agzCaEhyl5UOWB82c',
-			access_token_secret: 'sEwFQl4Sz2ptEIpASBr36SXINUYON81fgk4yb4AqIo0'
-		});
+		twitterAPI = new twitter(require('./apiKeys.json'));
 	
 	//check if we have the rights to do anything
 	twitterAPI.verifyCredentials(function(error, userdata) {

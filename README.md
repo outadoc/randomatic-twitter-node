@@ -4,15 +4,15 @@ Just a Twitter bot that listens for what you're saying. It will answer every twe
 #Configure
 Begin by opening a new account for the bot on Twitter. Then, create an application for this account on dev.twitter.com, and get the API keys.
 
-Setup in bot.js. Add the Twitter API keys of the bot you created on twitter to the `twitterAPI` constructor object. Like this:
+Setup in apiKeys.json. Replace the Twitter API keys of the bot you created on twitter in the file. Like this:
 
-``` js
-twitterAPI = new twitter({
-	consumer_key:        'YOUR_CONSUMER_TOKEN',
-	consumer_secret:     'YOUR_CONSUMER_SECRET',
-	access_token_key:    'YOUR_ACCESS_TOKEN_KEY',
-	access_token_secret: 'YOUR_ACCESS_TOKEN_SECRET'
-});
+``` json
+{
+	"consumer_key":        "YOUR_CONSUMER_TOKEN",
+	"consumer_secret":     "YOUR_CONSUMER_SECRET",
+	"access_token_key":    "YOUR_ACCESS_TOKEN_KEY",
+	"access_token_secret": "YOUR_ACCESS_TOKEN_SECRET"
+}
 ```
 
 #Usage
