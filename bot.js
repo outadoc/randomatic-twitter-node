@@ -36,7 +36,7 @@
 							&& data.text.toLowerCase().indexOf('@' + botUsername.toLowerCase()) != -1 	//if it's really mentionning us (it should)
 							&& data.retweeted_status === undefined) {									//and if it isn't a retweet of one of our tweets
 
-							LogUtils.logtrace("@mention from " + data.user.screen_name, LogUtils.Colors.GREEN);
+							LogUtils.logtrace("[" + data.id_str + "] @mention from " + data.user.screen_name, LogUtils.Colors.GREEN);
 							
 							//getting a random tweet using the "yes.thatcan.be/my/next/tweet/" method							
 							//we pass it the username of the real person, a reference to the twitter api module, and a callback
@@ -46,7 +46,7 @@
 										//handling the error, again
 										LogUtils.logtrace(error, LogUtils.Colors.RED);
 									} else {
-										LogUtils.logtrace("#got random tweet for " + newTweetData.username, LogUtils.Colors.GREEN);
+										LogUtils.logtrace("[" + newTweetData.reply_id + "] #got random tweet for " + newTweetData.username, LogUtils.Colors.GREEN);
 										//store the final tweet (containing the mention)
 										var tweetDone = '@' + newTweetData.username + " " + newTweetData.tweet;
 										
@@ -56,7 +56,7 @@
 												if (error) {
 													LogUtils.logtrace(error, LogUtils.Colors.RED);
 												} else {
-													LogUtils.logtrace("->replied to " + statusData.in_reply_to_screen_name, LogUtils.Colors.GREEN);
+													LogUtils.logtrace("[" + statusData.in_reply_to_status_id_str + "] ->replied to " + statusData.in_reply_to_screen_name, LogUtils.Colors.GREEN);
 												}
 											}
 										);
