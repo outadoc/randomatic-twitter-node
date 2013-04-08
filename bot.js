@@ -18,6 +18,7 @@
 		if (error) {
 			//if we don't, we'd better stop here anyway
 			LogUtils.logtrace(error, LogUtils.Colors.RED);
+			process.exit(1);
 		} else {
 			//the credentials check returns the username, so we can store it here
 			botUsername = userdata.screen_name;
@@ -68,11 +69,13 @@
 					stream.on('end', function(e) {
 						//if it stops, log it
 						LogUtils.logtrace("STREAM STOPPED. (" + e + ")", LogUtils.Colors.RED);
+						process.exit(1);
 					});
 					
 					stream.on('error', function (e, code) {
 						//if it encounters an error... well, fuck.
 						LogUtils.logtrace("STREAM ERROR. (" + e + " " + code + ")", LogUtils.Colors.RED);
+						process.exit(1);
 					});
 				}
 			);
