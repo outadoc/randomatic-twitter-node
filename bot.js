@@ -68,13 +68,13 @@
 
 					stream.on('end', function(e) {
 						//if it stops, log it
-						LogUtils.logtrace("STREAM STOPPED. (" + e + ")", LogUtils.Colors.RED);
+						LogUtils.logtrace("STREAM STOPPED. (" + JSON.stringify(e) + ")", LogUtils.Colors.RED);
 						process.exit(1);
 					});
 					
 					stream.on('error', function (e, code) {
 						//if it encounters an error... well, fuck.
-						LogUtils.logtrace("STREAM ERROR. (" + e + " " + code + ")", LogUtils.Colors.RED);
+						LogUtils.logtrace("STREAM ERROR. (" + JSON.stringify(e) + " " + code + ")", LogUtils.Colors.RED);
 						process.exit(1);
 					});
 				}
