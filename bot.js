@@ -25,61 +25,62 @@
 			LogUtils.logtrace("logged in as " + userdata.screen_name, LogUtils.Colors.CYAN);
 
 			//start listening to tweets that contain the bot's username using the streaming api
-			twitterAPI.stream('user', { with:'followings', track:'@' + botUsername },
-				function(stream) {
-					LogUtils.logtrace("streaming", LogUtils.Colors.CYAN);
+			initStreaming();
+		}
+	});
 
-					//when we're receiving something
-					stream.on('data', function(data) {
-						if(data.text !== undefined 														//if it's actually there
-							&& data.user.screen_name.toLowerCase() != botUsername.toLowerCase() 		//if it wasn't sent by the bot itself
-							&& data.text.toLowerCase().indexOf('@' + botUsername.toLowerCase()) != -1 	//if it's really mentionning us (it should)
-							&& data.retweeted_status === undefined) {									//and if it isn't a retweet of one of our tweets
+	function streamCallback(stream) {
+		LogUtils.logtrace("streaming", LogUtils.Colors.CYAN);
 
-							LogUtils.logtrace("[" + data.id_str + "] @mention from " + data.user.screen_name, LogUtils.Colors.GREEN);
+		//when we're receiving something
+		stream.on('data', function(data) {
+			if(data.text !== undefined 														//if it's actually there
+				&& data.user.screen_name.toLowerCase() != botUsername.toLowerCase() 		//if it wasn't sent by the bot itself
+				&& data.text.toLowerCase().indexOf('@' + botUsername.toLowerCase()) != -1 	//if it's really mentionning us (it should)
+				&& data.retweeted_status === undefined) {									//and if it isn't a retweet of one of our tweets
+
+				LogUtils.logtrace("[" + data.id_str + "] @mention from " + data.user.screen_name, LogUtils.Colors.GREEN);
+				
+				//getting a random tweet using the "yes.thatcan.be/my/next/tweet/" method							
+				//we pass it the username of the real person, a reference to the twitter api module, and a callback
+				require("./lib/MyNextTweet.js").getNewTweet(data, twitterAPI, 
+					function(error, newTweetData) {
+						if (error) {
+							//handling the error, again
+							LogUtils.logtrace(error, LogUtils.Colors.RED);
+						} else {
+							LogUtils.logtrace("[" + newTweetData.reply_id + "] #got random tweet for " + newTweetData.username, LogUtils.Colors.GREEN);
+							//store the final tweet (containing the mention)
+							var tweetDone = '@' + newTweetData.username + " " + newTweetData.tweet;
 							
-							//getting a random tweet using the "yes.thatcan.be/my/next/tweet/" method							
-							//we pass it the username of the real person, a reference to the twitter api module, and a callback
-							require("./lib/MyNextTweet.js").getNewTweet(data, twitterAPI, 
-								function(error, newTweetData) {
+							//reply to the tweet that mentionned us
+							twitterAPI.updateStatus(tweetDone.substring(0, 139), { in_reply_to_status_id: newTweetData.reply_id },
+								function(error, statusData) {
 									if (error) {
-										//handling the error, again
 										LogUtils.logtrace(error, LogUtils.Colors.RED);
 									} else {
-										LogUtils.logtrace("[" + newTweetData.reply_id + "] #got random tweet for " + newTweetData.username, LogUtils.Colors.GREEN);
-										//store the final tweet (containing the mention)
-										var tweetDone = '@' + newTweetData.username + " " + newTweetData.tweet;
-										
-										//reply to the tweet that mentionned us
-										twitterAPI.updateStatus(tweetDone.substring(0, 139), { in_reply_to_status_id: newTweetData.reply_id },
-											function(error, statusData) {
-												if (error) {
-													LogUtils.logtrace(error, LogUtils.Colors.RED);
-												} else {
-													LogUtils.logtrace("[" + statusData.in_reply_to_status_id_str + "] ->replied to " + statusData.in_reply_to_screen_name, LogUtils.Colors.GREEN);
-												}
-											}
-										);
+										LogUtils.logtrace("[" + statusData.in_reply_to_status_id_str + "] ->replied to " + statusData.in_reply_to_screen_name, LogUtils.Colors.GREEN);
 									}
 								}
 							);
 						}
-					});
+					}
+				);
+			}
+		});
 
-					stream.on('end', function(e) {
-						//if it stops, log it
-						LogUtils.logtrace("STREAM STOPPED. (" + JSON.stringify(e) + ")", LogUtils.Colors.RED);
-						process.exit(1);
-					});
-					
-					stream.on('error', function (e, code) {
-						//if it encounters an error... well, fuck.
-						LogUtils.logtrace("STREAM ERROR. (" + JSON.stringify(e) + " " + code + ")", LogUtils.Colors.RED);
-						process.exit(1);
-					});
-				}
-			);
-		}
-	});
+		stream.on('end', onStreamError);
+		stream.on('error', onStreamError);
+	}
+
+	function onStreamError(e) {
+		//when stream is disconnected, connect again
+		LogUtils.logtrace("STREAM END. (" + e + ")", LogUtils.Colors.RED);
+		initStreaming();
+	}
+
+	function initStreaming() {
+		twitterAPI.stream('user', { with:'followings', track:'@' + botUsername }, streamCallback);
+	}
 
 })();
