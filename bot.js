@@ -71,6 +71,8 @@
 
 		stream.on('end', onStreamError);
 		stream.on('error', onStreamError);
+
+		setTimeout(stream.destroy, 1000 * 60 * 60);
 	}
 
 	function onStreamError(e) {
