@@ -37,8 +37,8 @@
 			//if it's actually there
 			if(data.text !== undefined) {
 				var checkOrder = data.text.match(/(réponds à|reply to|mentionne|mention|parle à|talk to|speak to) @([a-zA-Z0-9]+)/i);
-
-				if(checkOrder != null && checkOrder[2] != null) {
+				
+				if(checkOrder != null) {
 					data.user.screen_name = checkOrder[2];
 				}
 
