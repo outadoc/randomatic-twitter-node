@@ -34,38 +34,46 @@
 
 		//when we're receiving something
 		stream.on('data', function(data) {
-			if(data.text !== undefined 														//if it's actually there
-				&& data.user.screen_name.toLowerCase() != botUsername.toLowerCase() 		//if it wasn't sent by the bot itself
-				&& data.text.toLowerCase().indexOf('@' + botUsername.toLowerCase()) != -1 	//if it's really mentionning us (it should)
-				&& data.retweeted_status === undefined) {									//and if it isn't a retweet of one of our tweets
+			//if it's actually there
+			if(data.text !== undefined) {
+				var checkOrder = data.text.match(/(réponds à|reply to|mentionne|mention|parle à|talk to|speak to) @([a-zA-Z0-9]+)/i);
 
-				LogUtils.logtrace("[" + data.id_str + "] @mention from " + data.user.screen_name, LogUtils.Colors.GREEN);
-				
-				//getting a random tweet using the "yes.thatcan.be/my/next/tweet/" method							
-				//we pass it the username of the real person, a reference to the twitter api module, and a callback
-				require("./lib/MyNextTweet.js").getNewTweet(data, twitterAPI, 
-					function(error, newTweetData) {
-						if (error) {
-							//handling the error, again
-							LogUtils.logtrace(error, LogUtils.Colors.RED);
-						} else {
-							LogUtils.logtrace("[" + newTweetData.reply_id + "] #got random tweet for " + newTweetData.username, LogUtils.Colors.GREEN);
-							//store the final tweet (containing the mention)
-							var tweetDone = '@' + newTweetData.username + " " + newTweetData.tweet;
-							
-							//reply to the tweet that mentionned us
-							twitterAPI.updateStatus(tweetDone.substring(0, 139), { in_reply_to_status_id: newTweetData.reply_id },
-								function(error, statusData) {
-									if (error) {
-										LogUtils.logtrace(error, LogUtils.Colors.RED);
-									} else {
-										LogUtils.logtrace("[" + statusData.in_reply_to_status_id_str + "] ->replied to " + statusData.in_reply_to_screen_name, LogUtils.Colors.GREEN);
+				if(checkOrder != null && checkOrder[2] != null) {
+					data.user.screen_name = checkOrder[2];
+				}
+
+				if(data.user.screen_name.toLowerCase() != botUsername.toLowerCase() 			//if it wasn't sent by the bot itself
+					&& data.text.toLowerCase().indexOf('@' + botUsername.toLowerCase()) != -1 	//if it's really mentionning us (it should)
+					&& data.retweeted_status === undefined) {									//and if it isn't a retweet of one of our tweets
+
+					LogUtils.logtrace("[" + data.id_str + "] @mention from " + data.user.screen_name, LogUtils.Colors.GREEN);
+					
+					//getting a random tweet using the "yes.thatcan.be/my/next/tweet/" method							
+					//we pass it the username of the real person, a reference to the twitter api module, and a callback
+					require("./lib/MyNextTweet.js").getNewTweet(data, twitterAPI, 
+						function(error, newTweetData) {
+							if (error) {
+								//handling the error, again
+								LogUtils.logtrace(error, LogUtils.Colors.RED);
+							} else {
+								LogUtils.logtrace("[" + newTweetData.reply_id + "] #got random tweet for " + newTweetData.username, LogUtils.Colors.GREEN);
+								//store the final tweet (containing the mention)
+								var tweetDone = '@' + newTweetData.username + " " + newTweetData.tweet;
+								
+								//reply to the tweet that mentionned us
+								twitterAPI.updateStatus(tweetDone.substring(0, 139), { in_reply_to_status_id: newTweetData.reply_id },
+									function(error, statusData) {
+										if (error) {
+											LogUtils.logtrace(error, LogUtils.Colors.RED);
+										} else {
+											LogUtils.logtrace("[" + statusData.in_reply_to_status_id_str + "] ->replied to " + statusData.in_reply_to_screen_name, LogUtils.Colors.GREEN);
+										}
 									}
-								}
-							);
+								);
+							}
 						}
-					}
-				);
+					);
+				}
 			}
 		});
 
