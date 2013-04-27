@@ -9,6 +9,7 @@
 
 		//the username of the bot. not set to begin with, we'll get it when authenticating
 		botUsername = null,
+		hasNotifiedTL = false;
 
 		//create an object using the keys we just determined
 		twitterAPI = new twitter(require('./apiKeys.json'));
@@ -65,8 +66,36 @@
 									function(error, statusData) {
 										if (error) {
 											LogUtils.logtrace(error, LogUtils.Colors.RED);
+
+											if(error.statusCode == 403 && !hasNotifiedTL) {
+												twitterAPI.showUser(botUsername, function(error, data) {
+													if(!error) {
+														if(data[0].name.match(/(\[TL\]) (.*)/)) {
+															hasNotifiedTL = true;
+														} else {
+															twitterAPI.updateProfile({name: '[TL] ' + data[0].name}, function(error, data) {
+																if(error) {
+																	LogUtils.logtrace("error while trying to change username (going IN TL)", LogUtils.Colors.RED);
+																}
+															});
+														}
+													}
+												})
+											}
 										} else {
 											LogUtils.logtrace("[" + statusData.in_reply_to_status_id_str + "] ->replied to " + statusData.in_reply_to_screen_name, LogUtils.Colors.GREEN);
+											
+											var tweetLimitCheck = statusData.user.name.match(/(\[TL\]) (.*)/);
+
+											if(tweetLimitCheck != null) {
+												twitterAPI.updateProfile({name: tweetLimitCheck[2]}, function(error, data) {
+													if(error) {
+														LogUtils.logtrace("error while trying to change username (going OUT of TL)", LogUtils.Colors.RED);
+													} else {
+														hasNotifiedTL = true;
+													}
+												});
+											}
 										}
 									}
 								);
