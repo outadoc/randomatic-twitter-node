@@ -9,7 +9,7 @@
 
 		//the username of the bot. not set to begin with, we'll get it when authenticating
 		botUsername = null,
-		hasNotifiedTL = false;
+		hasNotifiedTL = false,
 
 		//create an object using the keys we just determined
 		twitterAPI = new twitter(require('./apiKeys.json'));
