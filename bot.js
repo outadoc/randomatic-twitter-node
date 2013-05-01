@@ -40,6 +40,7 @@
 				var checkOrder = data.text.match(/(réponds à|reply to|mentionne|mention|parle à|talk to|speak to) @([a-zA-Z0-9_]+)/i);
 				
 				if(checkOrder != null) {
+					LogUtils.logtrace("[" + data.id_str + "] §request to mention " + checkOrder[2] + " coming from " + data.user.screen_name, LogUtils.Colors.GREEN);
 					data.user.screen_name = checkOrder[2];
 				}
 
