@@ -77,6 +77,8 @@
 															twitterAPI.updateProfile({name: '[TL] ' + data[0].name}, function(error, data) {
 																if(error) {
 																	LogUtils.logtrace("error while trying to change username (going IN TL)", LogUtils.Colors.RED);
+																} else {
+																	LogUtils.logtrace("gone IN tweet limit", LogUtils.Colors.RED);
 																}
 															});
 														}
@@ -94,6 +96,7 @@
 														LogUtils.logtrace("error while trying to change username (going OUT of TL)", LogUtils.Colors.RED);
 													} else {
 														hasNotifiedTL = true;
+														LogUtils.logtrace("gone OUT of tweet limit", LogUtils.Colors.RED);
 													}
 												});
 											}
