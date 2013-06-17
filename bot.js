@@ -113,13 +113,15 @@
 		stream.on('end', onStreamError);
 		stream.on('error', onStreamError);
 
-		setTimeout(stream.destroy, 1000 * 60 * 60);
+		//automatically disconnect every 30 minutes (more or less) to reset the stream
+		setTimeout(stream.destroy, 1000 * 60 * 30);
 	}
 
 	function onStreamError(e) {
 		//when stream is disconnected, connect again
-		LogUtils.logtrace("STREAM END. (" + e + ")", LogUtils.Colors.RED);
-		initStreaming();
+		if(!e.code) e.code = "unknown";
+		LogUtils.logtrace("streaming ended (" + e.code + ")", LogUtils.Colors.RED);
+		setTimeout(initStreaming, 5000);
 	}
 
 	function initStreaming() {
