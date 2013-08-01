@@ -58,12 +58,12 @@
 								//handling the error, again
 								LogUtils.logtrace(error, LogUtils.Colors.RED);
 							} else {
-								LogUtils.logtrace("[" + newTweetData.reply_id + "] #got random tweet for [" + newTweetData.username + "]", LogUtils.Colors.GREEN);
+								LogUtils.logtrace("[" + newTweetData.id_str + "] #got random tweet for [" + newTweetData.user.screen_name + "]: " + newTweetData.tweet, LogUtils.Colors.GREEN);
 								//store the final tweet (containing the mention)
-								var tweetDone = '@' + newTweetData.username + " " + newTweetData.tweet;
+								var tweetDone = '@' + newTweetData.user.screen_name + " " + newTweetData.tweet;
 								
 								//reply to the tweet that mentionned us
-								twitterAPI.updateStatus(tweetDone.substring(0, 139), { in_reply_to_status_id: newTweetData.reply_id },
+								twitterAPI.updateStatus(tweetDone.substring(0, 139), { in_reply_to_status_id: newTweetData.id_str },
 									function(error, statusData) {
 										if (error) {
 											LogUtils.logtrace(error, LogUtils.Colors.RED);
