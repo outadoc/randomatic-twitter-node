@@ -37,7 +37,7 @@
 		stream.on('data', function(data) {
 			//if it's actually there
 			if(data.text !== undefined) {
-				var checkOrder = data.text.match(/(réponds à|reply to|mentionne|mention|parle à|talk to|speak to) @([a-zA-Z0-9_]+)/i);
+				var checkOrder = data.text.match(/(réponds à|reply to|mentionne|attaque|mention|parle à|talk to|speak to|attack) @([a-zA-Z0-9_]+)/i);
 				
 				if(checkOrder != null) {
 					LogUtils.logtrace("[" + data.id_str + "] §request to mention [" + checkOrder[2] + "] coming from [" + data.user.screen_name + "]", LogUtils.Colors.GREEN);
