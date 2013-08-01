@@ -53,14 +53,14 @@
 					//getting a random tweet using the "yes.thatcan.be/my/next/tweet/" method							
 					//we pass it the username of the real person, a reference to the twitter api module, and a callback
 					require("./lib/MyNextTweet.js").getNewTweet(data, twitterAPI, 
-						function(error, newTweetData) {
+						function(error, tweetData, tweet) {
 							if (error) {
 								//handling the error, again
 								LogUtils.logtrace(error, LogUtils.Colors.RED);
 							} else {
-								LogUtils.logtrace("[" + newTweetData.id_str + "] #got random tweet for [" + newTweetData.user.screen_name + "]: " + newTweetData.tweet, LogUtils.Colors.GREEN);
+								LogUtils.logtrace("[" + tweetData.id_str + "] #got random tweet for [" + tweetData.user.screen_name + "]: " + tweet, LogUtils.Colors.GREEN);
 								//store the final tweet (containing the mention)
-								var tweetDone = '@' + newTweetData.user.screen_name + " " + newTweetData.tweet;
+								var tweetDone = '@' + tweetData.user.screen_name + " " + tweet;
 								
 								//reply to the tweet that mentionned us
 								twitterAPI.updateStatus(tweetDone.substring(0, 139), { in_reply_to_status_id: newTweetData.id_str },
