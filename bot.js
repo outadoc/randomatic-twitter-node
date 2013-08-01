@@ -63,7 +63,7 @@
 								var tweetDone = '@' + tweetData.user.screen_name + " " + tweet;
 								
 								//reply to the tweet that mentionned us
-								twitterAPI.updateStatus(tweetDone.substring(0, 139), { in_reply_to_status_id: newTweetData.id_str },
+								twitterAPI.updateStatus(tweetDone.substring(0, 139), { in_reply_to_status_id: tweetData.id_str },
 									function(error, statusData) {
 										if (error) {
 											LogUtils.logtrace(error, LogUtils.Colors.RED);
