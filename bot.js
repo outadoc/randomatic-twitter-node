@@ -4,7 +4,7 @@
 
 (function() {
 	//the twitter api module
-	var twitter = require('ntwitter'),
+	var ntwitter = require('ntwitter'),
 		LogUtils = require('./lib/LogUtils.js'),
 
 		//the username of the bot. not set to begin with, we'll get it when authenticating
@@ -12,7 +12,7 @@
 		hasNotifiedTL = false,
 
 		//create an object using the keys we just determined
-		twitterAPI = new twitter(require('./apiKeys.json'));
+		twitterAPI = new ntwitter(require('./apiKeys.json'));
 	
 	//check if we have the rights to do anything
 	twitterAPI.verifyCredentials(function(error, userdata) {
