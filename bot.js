@@ -11,8 +11,10 @@
 		botUsername = null,
 		hasNotifiedTL = false,
 
+		config = require('./config.json'),
+
 		//create an object using the keys we just determined
-		twitterAPI = new ntwitter(require('./apiKeys.json'));
+		twitterAPI = new ntwitter(config.keys);
 	
 	//check if we have the rights to do anything
 	twitterAPI.verifyCredentials(function(error, userdata) {
@@ -45,6 +47,7 @@
 				}
 
 				if(data.user.screen_name.toLowerCase() != botUsername.toLowerCase() 			//if it wasn't sent by the bot itself
+					&& config.blacklist.indexOf(data.user.screen_name) != -1 					//if the sender isn't in the blacklist
 					&& data.text.toLowerCase().indexOf('@' + botUsername.toLowerCase()) != -1 	//if it's really mentionning us (it should)
 					&& data.retweeted_status === undefined) {									//and if it isn't a retweet of one of our tweets
 
