@@ -1,9 +1,9 @@
 {
 	"keys": {
-		"consumer_key":        "2AwSPRTU5FlrP5f0YgPXg",
-		"consumer_secret":     "VXOLE6WUtAy8B9ubOQyS3ydV11PHxCsygz7nsye7U",
-		"access_token_key":    "1320886308-G1kfBNRmHltQDVqDvEOYH1agzCaEhyl5UOWB82c",
-		"access_token_secret": "sEwFQl4Sz2ptEIpASBr36SXINUYON81fgk4yb4AqIo0"
+		"consumer_key":        "YOUR_CONSUMER_TOKEN",
+		"consumer_secret":     "YOUR_CONSUMER_SECRET",
+		"access_token_key":    "YOUR_ACCESS_TOKEN_KEY",
+		"access_token_secret": "YOUR_ACCESS_TOKEN_SECRET"
 	},
 	"blacklist": []
 }
