@@ -53,7 +53,7 @@
 
 				//a few checks to see if we should reply
 				if(data.user.screen_name.toLowerCase() != botUsername.toLowerCase() 			//if it wasn't sent by the bot itself
-					&& config.blacklist.indexOf(data.user.screen_name) != -1 					//if the sender isn't in the blacklist
+					&& config.blacklist.indexOf(data.user.screen_name) == -1 					//if the sender isn't in the blacklist
 					&& data.text.toLowerCase().indexOf('@' + botUsername.toLowerCase()) != -1 	//if it's really mentionning us (it should)
 					&& data.retweeted_status === undefined) {									//and if it isn't a retweet of one of our tweets
 
